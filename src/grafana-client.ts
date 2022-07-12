@@ -129,8 +129,8 @@ export class GrafanaClient {
 	notifyNewVersion() {
 		dontWait(async () => {
 			const alert = {
-				tags: ['startup'],
-				text: `Application started: ${this.config.applicationName}@${this.config.applicationVersion}`,
+				tags: ['NewVersion'],
+				text: `New version online: ${this.config.applicationName}@${this.config.applicationVersion}`,
 			};
 			if (!(await this.find(alert).any())) {
 				await this.notify(alert);

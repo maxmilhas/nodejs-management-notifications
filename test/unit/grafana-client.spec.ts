@@ -283,8 +283,8 @@ describe(GrafanaClient.name, () => {
 	describe(GrafanaClient.prototype.notifyNewVersion.name, () => {
 		let find: jest.SpyInstance;
 		const alert = {
-			tags: ['startup'],
-			text: 'Application started: app name@app version',
+			tags: ['NewVersion'],
+			text: 'New version online: app name@app version',
 		};
 
 		beforeEach(() => {
