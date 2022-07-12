@@ -55,7 +55,8 @@ export class GrafanaClient {
 	private client = new GrafanaHttpClient(this.config, this.logger);
 
 	private constructor(
-		private config: GrafanaSettings,
+		private config: GrafanaSettings &
+			Required<Pick<GrafanaSettings, 'applicationName' | 'applicationVersion'>>,
 		private logger: Logger,
 	) {}
 
