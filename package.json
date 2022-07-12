@@ -1,7 +1,7 @@
 {
-  "name": "grafana-annotations",
+  "name": "management-notifications",
   "description": "This project is just a template for creation of new projects",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "author": {
     "name": "Thiago O Santos <tos.oliveira@gmail.com>"
   },
@@ -68,11 +68,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/maxmilhas-org/nodejs-grafana-annotations.git"
+    "url": "https://github.com/maxmilhas-org/nodejs-management-notifications.git"
   },
-  "homepage": "https://github.com/maxmilhas-org/nodejs-grafana-annotations#readme",
+  "homepage": "https://github.com/maxmilhas-org/nodejs-management-notifications#readme",
   "bugs": {
-    "url": "https://github.com/maxmilhas-org/nodejs-grafana-annotations/issues"
+    "url": "https://github.com/maxmilhas-org/nodejs-management-notifications/issues"
   },
   "keywords": [],
   "license": "MIT",
@@ -80,8 +80,10 @@
     "@codibre/confs": "^1.1.2",
     "@types/jest": "^28.1.4",
     "@types/superagent": "^4.1.15",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.28.0",
     "@typescript-eslint/parser": "^5.28.0",
+    "aws-sdk": "*",
     "del-cli": "^3.0.1",
     "eslint": "^7.0.0",
     "eslint-config-prettier": "^7.0.0",
@@ -100,10 +102,13 @@
     "typedoc-plugin-markdown": "^3.12.1",
     "typescript": "^4.5.2"
   },
+  "peerDependencies": {
+    "aws-sdk": "*"
+  },
   "dependencies": {
     "@codibre/fluent-iterable": "^1.24.0",
     "read-pkg": "^5.0.0",
     "superagent": "*",
-    "ts-base-http-client": "^0.1.0"
+    "uuid": "^8.3.2"
   }
 }
