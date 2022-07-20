@@ -68,11 +68,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/maxmilhas-org/nodejs-management-notifications.git"
+    "url": "https://github.com/maxmilhas/nodejs-management-notifications.git"
   },
-  "homepage": "https://github.com/maxmilhas-org/nodejs-management-notifications#readme",
+  "homepage": "https://github.com/maxmilhas/nodejs-management-notifications#readme",
   "bugs": {
-    "url": "https://github.com/maxmilhas-org/nodejs-management-notifications/issues"
+    "url": "https://github.com/maxmilhas/nodejs-management-notifications/issues"
   },
   "keywords": [],
   "license": "MIT",
@@ -104,6 +104,11 @@
   },
   "peerDependencies": {
     "aws-sdk": "*"
+  },
+  "peerDependenciesMeta": {
+    "aws-sdk": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@codibre/fluent-iterable": "^1.24.0",
