@@ -1,3 +1,10 @@
+## [0.2.1](https://github.com/maxmilhas/nodejs-management-notifications/compare/v0.2.0...v0.2.1) (2022-07-21)
+
+
+### Bug Fixes
+
+* fixing exports ([7692bb2](https://github.com/maxmilhas/nodejs-management-notifications/commit/7692bb213ab0f50bb2d7f66f0391a1dd6d184ddd))
+
 # [0.2.0](https://github.com/maxmilhas/nodejs-management-notifications/compare/v0.1.0...v0.2.0) (2022-07-21)
 
 
