@@ -1,3 +1,10 @@
+# [0.2.0](https://github.com/maxmilhas/nodejs-management-notifications/compare/v0.1.0...v0.2.0) (2022-07-21)
+
+
+### Features
+
+* adding notifyChange method ([1d12ab9](https://github.com/maxmilhas/nodejs-management-notifications/commit/1d12ab9b1c91f5762ccd1209591e5d9a77b8ebc0))
+
 # [0.1.0](https://github.com/maxmilhas/nodejs-management-notifications/compare/v0.0.0...v0.1.0) (2022-07-20)
 
 
