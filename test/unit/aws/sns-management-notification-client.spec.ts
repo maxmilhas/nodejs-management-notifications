@@ -1,5 +1,7 @@
-import { ManagementNotificationClient } from '../../../src/management-notification-client';
-import { SNSManagementNotificationClient } from '../../../src/aws/sns-management-notification-client';
+import {
+	ManagementNotificationClient,
+	SNSManagementNotificationClient,
+} from '../../../src';
 import * as SNSPublisherLib from '../../../src/aws/sns-publisher';
 
 describe('SQSManagementNotificationClient', () => {
