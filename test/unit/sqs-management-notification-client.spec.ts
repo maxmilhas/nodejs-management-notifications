@@ -205,4 +205,66 @@ describe(ManagementNotificationClient.name, () => {
 			expect(target.notify).toHaveCallsLike([alert]);
 		});
 	});
+
+	describe(ManagementNotificationClient.prototype.notifyChange.name, () => {
+		const oldEntity = { info: 'old entity' };
+		const newEntity = { info: 'new entity' };
+
+		beforeEach(() => {
+			jest.spyOn(target, 'notify').mockResolvedValue('new id');
+		});
+
+		it('should notify nothing when no change happened', async () => {
+			const result = await target.notifyChange(
+				undefined as any,
+				oldEntity,
+				oldEntity,
+			);
+
+			expect(target.notify).toHaveCallsLike();
+			expect(result).toBeUndefined();
+		});
+
+		it('should notify when some change happened and no base text is informed', async () => {
+			const result = await target.notifyChange(
+				{ info: 'my notification' } as any,
+				oldEntity,
+				newEntity,
+			);
+
+			expect(target.notify).toHaveCallsLike([
+				{
+					info: 'my notification',
+					text: ` {
+-  info: \"old entity\"
++  info: \"new entity\"
+ }
+`,
+				},
+			]);
+			expect(result).toBe('new id');
+		});
+
+		it('should notify when some change happened and some base text is informed', async () => {
+			const result = await target.notifyChange(
+				{ info: 'my notification', text: 'some change happened' } as any,
+				oldEntity,
+				newEntity,
+			);
+
+			expect(target.notify).toHaveCallsLike([
+				{
+					info: 'my notification',
+					text: `some change happened
+
+ {
+-  info: \"old entity\"
++  info: \"new entity\"
+ }
+`,
+				},
+			]);
+			expect(result).toBe('new id');
+		});
+	});
 });

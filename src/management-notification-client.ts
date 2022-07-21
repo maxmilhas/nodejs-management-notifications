@@ -5,6 +5,7 @@ import { Notification } from './notification';
 import { fluent } from '@codibre/fluent-iterable';
 import { dontWait } from './dont-wait';
 import { Publisher } from './publisher';
+import { diffString } from 'json-diff';
 
 export class ManagementNotificationClient {
 	private static instance: ManagementNotificationClient | undefined;
@@ -66,6 +67,22 @@ export class ManagementNotificationClient {
 		});
 
 		return id;
+	}
+
+	async notifyChange<T>(
+		alert: Notification,
+		oldEntity: T,
+		newEntity: T,
+	): Promise<string | undefined> {
+		const diff = diffString(oldEntity, newEntity, { color: false });
+		if (diff) {
+			const text = alert.text ? `${alert.text}\n\n${diff}` : diff;
+
+			return this.notify({
+				...alert,
+				text,
+			});
+		}
 	}
 
 	async updateNotification(
