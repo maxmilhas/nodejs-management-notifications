@@ -95,13 +95,15 @@ export class ManagementNotificationClient {
 		});
 	}
 
+	async notifyNewVersionAsync() {
+		const alert = {
+			tags: ['NewVersion'],
+			text: `New version online: ${this.config.applicationName}@${this.config.applicationVersion}`,
+		};
+		await this.notify(alert);
+	}
+
 	notifyNewVersion() {
-		dontWait(async () => {
-			const alert = {
-				tags: ['NewVersion'],
-				text: `New version online: ${this.config.applicationName}@${this.config.applicationVersion}`,
-			};
-			await this.notify(alert);
-		});
+		dontWait(this.notifyNewVersionAsync.bind(this));
 	}
 }
