@@ -21,6 +21,22 @@ describe('SQSManagementNotificationClient', () => {
 		expect(ManagementNotificationClient.create).toHaveCallsLike([
 			'my config',
 			publisher,
+			undefined,
+		]);
+		expect(result).toBe('my client');
+	});
+
+	it('should return an instance of ManagementNotificationClient with a SQS Publisher instance when a redis is informed', () => {
+		const result = SNSManagementNotificationClient.create(
+			'my config' as any,
+			'my redis' as any,
+		);
+
+		expect(SNSPublisherLib.SNSPublisher).toHaveCallsLike(['my config']);
+		expect(ManagementNotificationClient.create).toHaveCallsLike([
+			'my config',
+			publisher,
+			'my redis',
 		]);
 		expect(result).toBe('my client');
 	});
