@@ -1,3 +1,7 @@
+const RememberedRedis = jest.fn();
+jest.mock('@remembered/redis', () => ({
+	RememberedRedis,
+}));
 import { promisify } from 'util';
 import { Notification } from '../../src/notification';
 import { packageInfo } from '../../src/package-info';
@@ -59,6 +63,38 @@ describe(ManagementNotificationClient.name, () => {
 		}
 
 		expect(error).toBeInstanceOf(Error);
+	});
+
+	it('should wrap notifyVesionAsync with RememberedRedis when an redis instance is informed', () => {
+		let getKey: any;
+		const wrap = jest.fn().mockImplementation((_cb, gk) => {
+			getKey = gk;
+			return 'wrapped method';
+		});
+		RememberedRedis.mockReturnValue({
+			wrap,
+		});
+		delete ManagementNotificationClient['instance'];
+
+		const instance = ManagementNotificationClient.create(
+			{
+				applicationName: 'my name',
+			},
+			undefined as any,
+			'my redis' as any,
+		);
+
+		expect(instance).toBeInstanceOf(ManagementNotificationClient);
+		expect(RememberedRedis).toHaveCallsLike([
+			{
+				ttl: 0,
+				redisTtl: 1,
+			},
+			'my redis',
+		]);
+		expect(wrap).toHaveCallsLike([expect.any(Function), expect.any(Function)]);
+		expect(instance.notifyNewVersionAsync).toBe('wrapped method');
+		expect(getKey()).toBe('my name');
 	});
 
 	describe(ManagementNotificationClient.prototype.notify.name, () => {
@@ -179,6 +215,52 @@ describe(ManagementNotificationClient.name, () => {
 
 				expect(client.publish).toHaveCallsLike([{ id: '123', info: 'body' }]);
 				expect(result).toBeUndefined();
+			});
+		},
+	);
+
+	describe(
+		ManagementNotificationClient.prototype.notifyNewVersionAsync.name,
+		() => {
+			beforeEach(() => {
+				jest.spyOn(target, 'notify').mockResolvedValue(undefined as any);
+			});
+
+			it('should not notify anything when redis is being used and there is already a key on redis for applicationName with the same applicationVersion', async () => {
+				const get = jest.fn().mockReturnValue('my version');
+				target['redis'] = {
+					get,
+				} as any;
+				target['config'].applicationName = 'my application';
+				target['config'].applicationVersion = 'my version';
+
+				const result = await target.notifyNewVersionAsync();
+
+				expect(result).toBeUndefined();
+				expect(get).toHaveCallsLike(['version:my application']);
+				expect(target.notify).toHaveCallsLike();
+			});
+
+			it('should notify a new version when redis is being used and there is a key on redis for applicationName with a different applicationVersion', async () => {
+				const get = jest.fn().mockReturnValue('my version');
+				const setex = jest.fn().mockResolvedValue(undefined);
+				target['redis'] = {
+					get,
+					setex,
+				} as any;
+				target['config'].applicationName = 'my application';
+				target['config'].applicationVersion = 'another version';
+
+				const result = await target.notifyNewVersionAsync();
+
+				expect(result).toBeUndefined();
+				expect(get).toHaveCallsLike(['version:my application']);
+				expect(target.notify).toHaveCallsLike([expect.anything()]);
+				expect(setex).toHaveCallsLike([
+					'version:my application',
+					0,
+					'another version',
+				]);
 			});
 		},
 	);

@@ -6,9 +6,12 @@ import { fluent } from '@codibre/fluent-iterable';
 import { dontWait } from './dont-wait';
 import { Publisher } from './publisher';
 import { diffString } from 'json-diff';
+import Redis from 'ioredis';
+import { RememberedRedis } from '@remembered/redis';
 
 export class ManagementNotificationClient {
 	private static instance: ManagementNotificationClient | undefined;
+	private remembered: RememberedRedis | undefined;
 
 	private constructor(
 		private config: ManagementNotificationSettings &
@@ -19,7 +22,22 @@ export class ManagementNotificationClient {
 				>
 			>,
 		private publisher: Publisher,
-	) {}
+		private redis: Redis | undefined,
+	) {
+		if (redis) {
+			this.remembered = new RememberedRedis(
+				{
+					ttl: 0,
+					redisTtl: 1,
+				},
+				redis,
+			);
+			this.notifyNewVersionAsync = this.remembered.wrap(
+				this.notifyNewVersionAsync.bind(this),
+				() => this.config.applicationName,
+			);
+		}
+	}
 
 	static create(
 		config: ManagementNotificationSettings &
@@ -30,6 +48,7 @@ export class ManagementNotificationClient {
 				>
 			>,
 		publisher: Publisher,
+		redis?: Redis,
 	) {
 		if (this.instance) {
 			throw new Error('This client must be singleton!');
@@ -45,6 +64,7 @@ export class ManagementNotificationClient {
 				applicationVersion,
 			},
 			publisher,
+			redis,
 		));
 	}
 
@@ -96,11 +116,18 @@ export class ManagementNotificationClient {
 	}
 
 	async notifyNewVersionAsync() {
-		const alert = {
-			tags: ['NewVersion'],
-			text: `New version online: ${this.config.applicationName}@${this.config.applicationVersion}`,
-		};
-		await this.notify(alert);
+		const versionKey = `version:${this.config.applicationName}`;
+		if (
+			!this.redis ||
+			(await this.redis.get(versionKey)) !== this.config.applicationVersion
+		) {
+			const alert = {
+				tags: ['NewVersion'],
+				text: `New version online: ${this.config.applicationName}@${this.config.applicationVersion}`,
+			};
+			await this.notify(alert);
+			await this.redis?.setex(versionKey, 0, this.config.applicationVersion);
+		}
 	}
 
 	notifyNewVersion() {
