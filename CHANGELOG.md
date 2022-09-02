@@ -1,3 +1,10 @@
+## [0.3.1](https://github.com/maxmilhas/nodejs-management-notifications/compare/v0.3.0...v0.3.1) (2022-09-02)
+
+
+### Bug Fixes
+
+* receiving redis through sns factory too [AIRSK-618] ([#4](https://github.com/maxmilhas/nodejs-management-notifications/issues/4)) ([ca46919](https://github.com/maxmilhas/nodejs-management-notifications/commit/ca46919a93ca5f24f286f6a6172b5b99879b9513))
+
 # [0.3.0](https://github.com/maxmilhas/nodejs-management-notifications/compare/v0.2.2...v0.3.0) (2022-09-02)
 
 
