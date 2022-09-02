@@ -1,3 +1,10 @@
+# [0.3.0](https://github.com/maxmilhas/nodejs-management-notifications/compare/v0.2.2...v0.3.0) (2022-09-02)
+
+
+### Features
+
+* using redis to control unique notification of new version [AIRSK-618] ([#3](https://github.com/maxmilhas/nodejs-management-notifications/issues/3)) ([1e7a605](https://github.com/maxmilhas/nodejs-management-notifications/commit/1e7a6056ad4b4b8592366fb3fc7e88304bc23311))
+
 ## [0.2.2](https://github.com/maxmilhas/nodejs-management-notifications/compare/v0.2.1...v0.2.2) (2022-07-26)
 
 
