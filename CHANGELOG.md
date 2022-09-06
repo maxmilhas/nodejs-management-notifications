@@ -1,3 +1,10 @@
+## [0.3.2](https://github.com/maxmilhas/nodejs-management-notifications/compare/v0.3.1...v0.3.2) (2022-09-06)
+
+
+### Bug Fixes
+
+* adding sns attributes [AIRSK-617] ([#5](https://github.com/maxmilhas/nodejs-management-notifications/issues/5)) ([d77bd8d](https://github.com/maxmilhas/nodejs-management-notifications/commit/d77bd8d797c74ba1a3bf22c234148c64c25592a2))
+
 ## [0.3.1](https://github.com/maxmilhas/nodejs-management-notifications/compare/v0.3.0...v0.3.1) (2022-09-02)
 
 
